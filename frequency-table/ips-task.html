@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
  <head>
-  <title>Частотная таблица ip адресов</title><meta charset="utf-8">
+  <title>Р§Р°СЃС‚РѕС‚РЅР°СЏ С‚Р°Р±Р»РёС†Р° ip Р°РґСЂРµСЃРѕРІ</title><meta charset="utf-8">
   <style>
     table * {
       padding: 0;
@@ -22,7 +22,7 @@
   </style>
  </head>
  <body>
-   <h4 id="author" title="GossJS">Микуленко Владимир</h4>
+   <h4 id="author" title="GossJS">РњРёРєСѓР»РµРЅРєРѕ Р’Р»Р°РґРёРјРёСЂ</h4>
    <script>
    {
 	getIPList().then(ipList => {
@@ -40,9 +40,9 @@
 		const countOneTimes = getOneTimesCount(uniqIpList);
 		const maxFrequency = getMaxFrequency(uniqIpList);
 		
-		document.body.appendChild(createDiv('Количество уникальных: ' + countUnique));
-		document.body.appendChild(createDiv('Количество одинарных: ' + countOneTimes));
-        document.body.appendChild(createDiv('Максимальное количество: ' + maxFrequency));
+		document.body.appendChild(createDiv('РљРѕР»РёС‡РµСЃС‚РІРѕ СѓРЅРёРєР°Р»СЊРЅС‹С…: ' + countUnique));
+		document.body.appendChild(createDiv('РљРѕР»РёС‡РµСЃС‚РІРѕ РѕРґРёРЅР°СЂРЅС‹С…: ' + countOneTimes));
+        document.body.appendChild(createDiv('РњР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ: ' + maxFrequency));
 		document.body.appendChild(createTableFromObjectsArray(uniqIpList));
 		
 		function onlyUniques(ipObject) {

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Получение ответа от сервера</title><meta charset="utf-8">
+ </head>
+ <body>
+   <h4 id="author" title="GossJS">Микуленко Владимир</h4>
+   <script>
+   {
+      getUsers().then(result => {
+        const liList = [];
+        if (!result.error) {
+          result.users.forEach(user => {
+            liList.push(createLiElement(user.login));
+          })
+        } else {
+          const li = createLiElement(result.error);
+          li.style.setProperty('color', 'red');
+          liList.push(li);
+        }
+        document.body.appendChild(createUlElement(liList));
+      });
+
+      function createLiElement(text = '') {
+        const li = document.createElement('li');
+        li.appendChild(document.createTextNode(text));
+        return li;
+      }
+      
+      function createUlElement(liList = []) {
+        const ul = document.createElement('ul');
+        for (const li of liList) {
+          ul.appendChild(li);
+        }
+        return ul;
+      }
+      
+      function getUsers() {
+        const baseUrl = new URL('https://kodaktor.ru/j/users/');
+        return new Promise(resolve => {
+          fetch(baseUrl).then(response => {
+            if (response.ok) {
+              response.json().then(result => {
+                resolve(result);
+              }).catch(err => {
+                throw err;
+              });
+            } else {
+              throw Error(response.statusText);
+            }
+          }).catch(err => {
+            resolve({
+                error: err
+            });
+          });
+        });
+      }
+   }
+   </script>
+ </body>
+</html>

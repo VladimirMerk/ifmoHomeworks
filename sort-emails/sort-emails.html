@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Сортировка строк по длине</title><meta charset="utf-8">
+ </head>
+ <body>
+   <h4 id="author" title="GossJS">Микуленко Владимир</h4>
+   <script>
+   {
+	getEmails().then(emails => {
+		if (emails.error){
+			console.error(emails.error);
+			return;
+		}
+       
+		const list = document.createElement('ul');
+         
+		emails.sort(sortByLength)
+		.map((email) => list.appendChild(createLi(email)));
+        
+		document.body.appendChild(list);
+	})
+      
+	function getEmails() {
+		return new Promise(resolve => {
+			const url = new URL('https://kodaktor.ru/api/usermails');
+			fetch(url).then(response => {
+				if (!response.ok) throw new Error(response.statusText);
+				return response.json();
+			})
+            .then(emails => resolve(emails))
+        	.catch(error => resolve({error}));
+		});
+	}
+     
+	function sortByLength(a, b) {
+		return a.length - b.length;
+	}
+     
+	function createLi(text) {
+		const textNode = document.createTextNode(text);
+		const liElement = document.createElement('li');
+		
+        liElement.appendChild(textNode);
+        
+        return liElement;
+     }
+   }
+   </script>
+ </body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Тестирование формы регулярным выражением</title><meta charset="utf-8">
+ </head>
+ <body>
+  <h4 id="author" title="GossJS">Микуленко Владимир</h4>
+  <form action="/api/color">
+      <input placeholder="#FFFFFF" required pattern="^#[A-Fa-f0-9]{6}$" name="rgb"/>
+      <input type="submit" value="ТЕСТ">
+    </form>
+  <h1>Значения формы тестируются регулярным выражением</h1>
+ </body>
+</html>
