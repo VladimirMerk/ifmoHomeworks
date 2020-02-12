@@ -1,0 +1,57 @@
+[{
+		"lastName": "Ivanov",
+		"scores": [{
+				"discipline": "Multimedia",
+				"score": 3
+			},
+			{
+				"discipline": "Web-design",
+				"score": 3
+			},
+			{
+				"discipline": "Graphic",
+				"score": 5
+			}
+		]
+	},
+	{
+		"lastName": "Petrova",
+		"scores": [{
+				"discipline": "Multimedia",
+				"score": 3
+			},
+			{
+				"discipline": "Web-design",
+				"score": 4
+			},
+			{
+				"discipline": "Graphic",
+				"score": 5
+			},
+			{
+				"discipline": "Logic",
+				"score": 5
+			}
+		]
+	},
+	{
+		"lastName": "Sidorenko",
+		"scores": [{
+				"discipline": "Multimedia",
+				"score": 3
+			},
+			{
+				"discipline": "Web-design",
+				"score": 4
+			},
+			{
+				"discipline": "Graphic",
+				"score": 3
+			},
+			{
+				"discipline": "Logic",
+				"score": 4
+			}
+		]
+	}
+]

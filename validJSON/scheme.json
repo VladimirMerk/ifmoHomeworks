@@ -1,0 +1,43 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"description": "Student Performance Chart",
+	"type": "object",
+	"uniqueItems": true,
+	"minItems": 1,
+	"properties": {
+		"students": {
+			"type": "array",
+			"uniqueItems": true,
+			"minItems": 1,
+			"items": {
+				"required": ["lastName", "scores"],
+				"properties": {
+					"lastName": {
+						"type": "string",
+						"minLength": 1
+					},
+					"scores": {
+						"type": "array",
+						"uniqueItems": true,
+						"minItems": 0,
+						"items": {
+							"required": ["discipline", "score"],
+							"properties": {
+								"discipline": {
+									"type": "string",
+									"minLength": 1
+								},
+								"score": {
+									"type": "number",
+									"minimum": 1,
+									"maximum": 5
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"required": ["students"]
+}
