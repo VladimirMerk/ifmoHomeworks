@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Задание 7. Canvas</title><meta charset="utf-8">
+ </head>
+ <body>
+   <h4 id="author" title="GossJS">Микуленко Владимир</h4>
+   <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis lacinia dictum eros imperdiet eleifend. Praesent sed ipsum quam. Quisque vel vulputate libero. Mauris lobortis commodo sapien. Maecenas lobortis, elit ac consequat auctor, metus quam mattis erat, vel dapibus nisi ex a ipsum. Nulla laoreet fringilla vulputate. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse gravida mi vehicula lacus pharetra suscipit. Integer porttitor tempor augue, vel venenatis massa ornare in. Sed at feugiat mi. Sed lacinia auctor fermentum.
+    </p>
+    <p>
+    Quisque rutrum vulputate lectus id pulvinar. Maecenas cursus sodales magna vel auctor. Praesent varius, risus id aliquam pellentesque, tortor eros semper lorem, quis semper dolor nibh vitae quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum odio mauris, dignissim id ante sed, lacinia luctus ligula. Suspendisse vitae lacinia mi, vitae molestie nunc. Donec condimentum justo eros. Mauris ultrices erat vel tincidunt dapibus.
+    </p>
+    <p>
+    Fusce magna mi, pulvinar non tortor ut, suscipit condimentum nunc. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer sollicitudin dignissim interdum. Nunc felis libero, pulvinar sed libero eget, congue lobortis nisl. Donec semper bibendum convallis. Aenean luctus, sapien ut euismod pretium, est massa venenatis enim, quis fermentum mi ipsum vel dui. Ut pharetra mauris urna, quis accumsan purus pretium in. Fusce in elementum justo, finibus mollis odio. Pellentesque scelerisque justo eros, id interdum felis sollicitudin eu.
+    </p>
+    <p>
+    Aliquam porttitor auctor pretium. Vivamus non tellus lectus. Sed sed eros non elit dictum vehicula. Sed fermentum enim nec scelerisque dictum. Donec tempus odio eget urna efficitur volutpat. Nulla ac magna eu neque bibendum mattis. Etiam suscipit mi eu laoreet vestibulum. Vivamus venenatis magna in nibh elementum, in scelerisque augue consectetur. Sed nec risus augue. Maecenas laoreet aliquet elit vitae mattis. Curabitur at convallis nisl, at dapibus metus. Nulla eros velit, posuere id orci ut, porta feugiat ligula. Morbi scelerisque nulla est. Nulla ornare, lacus in interdum vehicula, purus lorem elementum odio, vitae cursus ligula erat ut nisl. Sed nunc risus, laoreet in augue vitae, dictum ullamcorper urna.
+    </p>
+    <p>
+    Ut facilisis dui quis porttitor interdum. Maecenas sit amet mattis odio. Cras sit amet ultricies nisl. Vivamus vel consequat ligula, a aliquam erat. Cras scelerisque laoreet tincidunt. Suspendisse iaculis leo ut pretium sodales. Curabitur scelerisque lacinia neque id aliquet. Nullam pellentesque tincidunt neque. Donec vehicula volutpat accumsan. Curabitur cursus eros urna, cursus blandit urna dictum eu. Proin dapibus neque justo, ultrices tincidunt mi molestie sit amet.
+    </p>
+   <script>{
+     function makeCanvas(x, y) {
+       const canvas = document.createElement('canvas'),
+       ctx = canvas.getContext('2d');
+       canvas.setAttribute('width', x);
+       canvas.setAttribute('height', y);
+       return { canvas, ctx };
+      }
+
+      const { canvas, ctx } = makeCanvas(200, 200);
+
+      drawInitials({ angle: -45, offsetLeft: 10, offsetTop: 10 });
+
+      const image = canvas.toDataURL("image/png");
+      document.body.style.backgroundImage = `url(${image})`;
+
+      function drawInitials({offsetLeft = 0, offsetTop = 0, angle = 0} = {}) {
+        ctx.lineWidth = 2
+        ctx.strokeStyle = "blue"
+        ctx.fillStyle = "blue"
+
+        // Draw a first letter
+        ctx.beginPath();
+        ctx.moveTo(...modify(10, 120));
+        ctx.lineTo(...modify(10, 10));
+        ctx.lineTo(...modify(40, 40));
+        ctx.lineTo(...modify(40, 60));
+        ctx.lineTo(...modify(10, 60));
+        ctx.lineTo(...modify(40, 100));
+        ctx.lineTo(...modify(40, 120));
+        ctx.closePath();
+        ctx.stroke();
+
+        // Draw a dot after second letter
+        ctx.beginPath();
+        drawDot(45, 119);
+        ctx.stroke();
+        ctx.fill();
+
+        // Draw a second letter
+        ctx.beginPath();
+        ctx.moveTo(...modify(90, 120));
+        ctx.lineTo(...modify(60, 70));
+        ctx.lineTo(...modify(60, 10));
+        ctx.lineTo(...modify(90, 10));
+        ctx.stroke();
+
+        // Draw a dot after the second letter
+        ctx.beginPath();
+        drawDot(100, 119);
+        ctx.stroke();
+        ctx.fill();
+
+        // Draw a red arc
+        ctx.beginPath();
+        ctx.lineWidth = 2
+        ctx.strokeStyle = "red"
+        ctx.bezierCurveTo(
+          ...modify(10, 130),
+          ...modify(45, 160),
+          ...modify(100, 130)
+        );
+        ctx.stroke();
+
+        function drawDot(x, y) {
+          ctx.arc(...modify(x, y), 1, Math.PI * 2, false);
+        }
+
+        function modify(x, y) {
+          [x, y] = [...affineRotateModifier({x, y, angle})]
+          x += offsetLeft;
+          y += offsetTop;
+          return [x, y];
+        }
+      }
+
+      function affineRotateModifier({x = 0, y = 0, angle = 0, width = 100, height = 100} = {}) {
+        const radAngle = (angle % 360) * Math.PI / 180;
+        const [hw, hh] = [width / 2, height / 2];
+        const [xs, ys] = [x - hw, y - hh];
+        return [
+          Math.cos(radAngle) * xs - Math.sin(radAngle) * ys + hw,
+          Math.sin(radAngle) * xs + Math.cos(radAngle) * ys + hh
+        ];
+      }
+   }</script>
+ </body>
+</html>

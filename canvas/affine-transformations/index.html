@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+ <head><title>CSS-аффинное-преобразование с помощью матрицы</title>
+   <style>   body, h2, div {font-family: monospace}  .l {font-weight: bold; color: red;}
+       #c {position: fixed; top: 25%; width: 98%; height: 100%; }
+       #i {
+         background: green; width:400px; height: 200px; margin-left: 50%;
+       		border: outset blue; border-radius: 5px;
+       		transform: matrix(1, 0, 0, 1, 0, 0);
+       		transform: matrix(1, 0, 0.57735, 1, 57, 0);
+
+     }   </style>
+  <meta charset="utf-8">
+ </head>
+ <body>
+      transform: matrix(1, 0, 0, 1, 0, 0);<br />
+      transform: matrix(1, 0, 0.57735, 1, 57, 0);<br />
+      <table border="1">
+      <tr><td class="l">
+         {x,y,1}.матрица
+       </td><td>
+       матрица.{{x},{y},{1}}
+       </td>
+       </tr>
+     <tr><td  class="l">
+         <a target="_blank" href="http://www.wolframalpha.com/input/?i=%7Bx%2Cy%2C1%7D.%7B%7Ba%2Cd%2C0%7D%2C%7Bb%2Ce%2C0%7D%2C%7Bc%2Cf%2C1%7D%7D">{x,y,1}.{{a<sub>1</sub>,a<sub>2</sub>,0},{b<sub>1</sub>,b<sub>2</sub>,0},{c<sub>1</sub>,c<sub>2</sub>,1}}</a>
+       </td><td>
+       <a target="_blank" href="http://www.wolframalpha.com/input/?i=%7B%7Ba,b,c%7D,%7Bd,e,f%7D,%7B0,0,1%7D%7D.%7B%7Bx%7D,%7By%7D,%7B1%7D%7D">{{a<sub>1</sub>,b<sub>1</sub>,c<sub>1</sub>},{a<sub>2</sub>,b<sub>2</sub>,c<sub>2</sub>},{0,0,1}}.{{x},{y},{1}}</a>
+       </td>
+       </tr>
+
+     <tr><td>
+        <table  class="l"><tr><td>a<sub>1</sub></td><td>a<sub>2</sub></td><td>0</td></tr><tr><td>b<sub>1</sub></td><td>b<sub>2</sub></td><td>0</td></tr><tr><td>c<sub>1</sub></td><td>c<sub>2</sub></td><td>1</td></tr></table>
+
+     </td><td>
+        <table><tr><td>a<sub>1</sub></td><td>b<sub>1</sub></td><td>c<sub>1</sub></td></tr><tr><td>a<sub>2</sub></td><td>b<sub>2</sub></td><td>c<sub>2</sub></td></tr><tr><td>0</td><td>0</td><td>1</td></tr></table>
+
+     </td></tr></table>
+
+   <h2>Общий вид</h2>
+   <h3>x' = a<sub>1</sub>x + b<sub>1</sub>y + c<sub>1</sub><br>
+       y' = a<sub>2</sub>x + b<sub>2</sub>y + c<sub>2</sub><br>transform: matrix(a<sub>1</sub>, a<sub>2</sub>, b<sub>1</sub>, b<sub>2</sub>, c<sub>1</sub>, c<sub>2</sub>)</h3>
+   <h2>Тождественное преобразование</h2>
+   <h3>x' = 1x + 0y + 0<br>y' = 0x + 1y + 0<br>matrix(1, 0, 0, 1, 0, 0)</h3>
+   <h2>Параллельный перенос</h2>
+   <h3>x' = 1x + 0y - 10<br>y' = 0x + 1y - 150<br>matrix(1, 0, 0, 1, -10, -150)</h3>
+   <h2>Поворот</h2>
+   <h3>Вокруг центра объекта на N*Math.PI/180 градусов против ч/с</h3>
+   <h3>x' = cos(N)*x - sin(N)*y <br>y' = sin(N)*x + cos(N)*y<br>matrix(0.866, -0.5, 0.5, 0.866, 0, 0)</h3>
+
+
+   <h2>Скос по x</h2>
+   <h3>Вдоль вертикальной оси симметрии объекта на N*Math.PI/180 <br>градусов против ч/с</h3>
+   <h3>x' = 1*x + tan(N)*y <br>y' = 0*x +1*y<br>matrix(1, 0.57735, 0, 1, 0, 0)</h3>
+   <!--  скос без сдвига   transform: matrix(1, 0, 0.57735, 1, 57, 0);   -->
+
+
+
+   <div id="c"><div id="i"></div></div>
+   <h3>cos(30) = <script>document.write(Math.cos(30*Math.PI/180))</script>, sin(30) = <script>document.write(Math.sin(30*Math.PI/180))</script>, tan(30) = <script>document.write(Math.tan(30*Math.PI/180))</script></h3>
+
+ </body>
+</html>

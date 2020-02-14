@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Задание 7. Canvas</title><meta charset="utf-8">
+ </head>
+ <body>
+   <h4 id="author" title="GossJS">Микуленко Владимир</h4>
+   <script>{
+     function makeCanvas(x, y) {
+       const canvas = document.createElement('canvas'),
+       ctx = canvas.getContext('2d');
+       canvas.setAttribute('width', x);
+       canvas.setAttribute('height', y);
+       return { canvas, ctx };
+      }
+
+      const { canvas, ctx } = makeCanvas(500, 500);
+  	  document.body.appendChild(canvas);
+
+      drawInitials();
+      drawInitials({ angle: -90, offsetLeft: 100, offsetTop: 10 });
+
+      function drawInitials({offsetLeft = 0, offsetTop = 0, angle = 0} = {}) {
+        ctx.lineWidth = 2
+        ctx.strokeStyle = "blue"
+        ctx.fillStyle = "blue"
+
+        // Draw a first letter
+        ctx.beginPath();
+        ctx.moveTo(...modify(10, 120));
+        ctx.lineTo(...modify(10, 10));
+        ctx.lineTo(...modify(40, 40));
+        ctx.lineTo(...modify(40, 60));
+        ctx.lineTo(...modify(10, 60));
+        ctx.lineTo(...modify(40, 100));
+        ctx.lineTo(...modify(40, 120));
+        ctx.closePath();
+        ctx.stroke();
+
+        // Draw a dot after second letter
+        ctx.beginPath();
+        drawDot(45, 119);
+        ctx.stroke();
+        ctx.fill();
+
+        // Draw a second letter
+        ctx.beginPath();
+        ctx.moveTo(...modify(90, 120));
+        ctx.lineTo(...modify(60, 70));
+        ctx.lineTo(...modify(60, 10));
+        ctx.lineTo(...modify(90, 10));
+        ctx.stroke();
+
+        // Draw a dot after the second letter
+        ctx.beginPath();
+        drawDot(100, 119);
+        ctx.stroke();
+        ctx.fill();
+
+        // Draw a red arc
+        ctx.beginPath();
+        ctx.lineWidth = 2
+        ctx.strokeStyle = "red"
+        ctx.bezierCurveTo(
+          ...modify(10, 130),
+          ...modify(45, 160),
+          ...modify(100, 130)
+        );
+        ctx.stroke();
+
+        function drawDot(x, y) {
+          ctx.arc(...modify(x, y), 1, Math.PI * 2, false);
+        }
+
+        function modify(x, y) {
+          [x, y] = [...affineRotateModifier({x, y, angle})]
+          x += offsetLeft;
+          y += offsetTop;
+          return [x, y];
+        }
+      }
+
+      function affineRotateModifier({x = 0, y = 0, angle = 0, width = 100, height = 100} = {}) {
+        const radAngle = (angle % 360) * Math.PI / 180;
+        const [hw, hh] = [width / 2, height / 2];
+        const [xs, ys] = [x - hw, y - hh];
+        return [
+          Math.cos(radAngle) * xs - Math.sin(radAngle) * ys + hw,
+          Math.sin(radAngle) * xs + Math.cos(radAngle) * ys + hh
+        ];
+      }
+   }</script>
+ </body>
+</html>
