@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>HTML5 JQuery AJAX</title>
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+  <script>
+  $(() => {
+    getRatesAjax()
+    .done(createRatesTable)
+    .fail(errorRates);
+  });
+
+  function getRatesAjax() {
+    const ratesUrl = 'https://kodaktor.ru/j/rates';
+    return $.get(ratesUrl, null, null, 'json');
+  }
+
+  function errorRates () {
+    $('<div></div>', { class: "error" })
+    .text('Error loading rates list')
+    .appendTo('body');
+  }
+
+  function createRatesTable(ratesArray) {
+    createTable(['Валюта', 'Покупка', 'Продажа'], ratesArray).appendTo('body');
+  }
+
+  function createTable(headers, data, styles = {}) {
+    if (!$.isArray(headers)) throw new Error('Headers must be an array');
+    if (!$.isArray(data)) throw new Error('Data must be an array');
+
+    let {
+      tableStyle = {
+          borderSpacing: '1px',
+          padding: '8px',
+          border: '4px double #000',
+          borderRadius: '15px',
+          width: '460px'
+        },
+        headerRowStyle = {
+          backgroundColor: '#5a5a5a',
+          color: '#fff',
+          fontWeight: 'bold',
+          textAlign: 'left'
+        },
+        headerCellStyle = {
+          padding: '5px 10px',
+          borderRadius: '5px'
+        },
+        bodyRowStyle = {
+          fontWeight: 'bold',
+        },
+        bodyCellStyle = {
+          padding: '5px 10px'
+        }
+    } = styles;
+
+    const tableElement = $('<table></table>', {
+      class: "rates",
+      css: tableStyle
+    });
+
+    const trHeader =
+      $('<tr></tr>', { class: "rates-header", css: headerRowStyle })
+      .append(...headers.map(headerTitle => {
+        return $('<th></th>', { css: headerCellStyle }).text(headerTitle);
+      }));
+
+    const trBody =
+      data.map(row => {
+        const tBodyRow = $('<tr></tr>', { css: bodyRowStyle })
+        .append(...Object.values(row).map(item => {
+          return $('<td></td>', { css: bodyCellStyle }).text(item);
+        }));
+        return tBodyRow;
+      });
+
+    tableElement.append(trHeader, ...trBody)
+      .children('tr:even:not(.rates-header)')
+      .addClass('even')
+      .css({
+        backgroundColor: '#ccc'
+      });
+    return tableElement
+  }
+  </script>
+ </head>
+ <body>
+  <h4 id="author" title="GossJS">Микуленко Владимир</h4>
+ </body>
+</html>
