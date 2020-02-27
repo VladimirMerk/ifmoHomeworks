@@ -1,0 +1,25 @@
+<html>
+  <header>
+    <script src="component.js" charset="utf-8"></script>
+    <style>
+      :not(:defined) {
+        color: #ff0000;
+      }
+    </style>
+  </header>
+  <body>
+    <my-element>
+      My element content
+    </my-element>
+    <br /><br />
+    <time-formatted
+      datetime="2020-02-26"
+      year="numeric" month="long" day="numeric"
+      hour="numeric" minute="numeric" second="numeric"
+      time-zone-name="short"
+    >Загрузка</time-formatted>
+    <br /><br />
+    <button is="hello-button">Скажу привет за клик по мне ;)</button>
+    <button is="hello-button" disabled>Скажу привет за клик по мне ;)</button>
+  </body>
+</html>
