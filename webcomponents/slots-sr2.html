@@ -1,0 +1,62 @@
+<html>
+  <header>
+  </header>
+  <body>
+    <style>
+      [slot='item'] {
+        color: #ff0000;
+      }
+    </style>
+
+    <template id="customMenu">
+      <style>
+        .menu {
+          font-size: 22px;
+        }
+        [name='title'] {
+          cursor: pointer;
+        }
+        [name='item'] {
+          font-weight: bold;
+        }
+        .menu.closed ul {
+          display: none;
+        }
+      </style>
+      <div class="menu">
+        <slot name="title"></slot>
+        <ul><slot name="item"></slot></ul>
+      </div>
+    </template>
+
+    <custom-menu id="menu">
+      <span slot="title">Сладости</span>
+      <li slot="item">Леденцы</li>
+      <li slot="item">Фруктовые тосты</li>
+      <li slot="item">Кексы</li>
+    </custom-menu>
+
+    <script>
+      customElements.define('custom-menu', class extends HTMLElement {
+        connectedCallback() {
+          this.attachShadow({ mode: 'open' })
+          this.shadowRoot.appendChild(customMenu.content.cloneNode(true))
+          this.shadowRoot.querySelector(`[name=title]`).onclick = () => {
+            this.shadowRoot.querySelector('.menu').classList.toggle('closed')
+          }
+          this.shadowRoot.addEventListener('slotchange',
+            (e) => {
+              // Выполняется при изменении/добавлении/удалении самого слота,
+              // но не его содержимого
+              //
+              // Если мы хотим отслеживать внутренние изменения обычного DOM-дерева,
+              // можно также использовать более обобщённый механизм: MutationObserver.
+              console.log("slotchange: " + e.target.name)
+            }
+          );
+        }
+      })
+
+    </script>
+  </body>
+</html>

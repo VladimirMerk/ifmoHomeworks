@@ -1,0 +1,64 @@
+<html>
+  <header>
+  </header>
+  <body>
+    <user-card>
+      <span slot="username">Иван Иванов</span>
+      <span slot="birthday">01.01.2001</span>
+    </user-card>
+    <br />
+    <user-card>
+      <span slot="username">Иван Иванов</span>
+    </user-card>
+    <br />
+    <user-card>
+      Слоты с одинаковым именем вставляются один за другим
+      <span slot="username">Иван</span>
+      <span slot="username">Иванов</span>
+    </user-card>
+    <br />
+    <user-card>
+      <span slot="username">Иван Иванов</span>
+      <div>
+        Этот текст не будет отрендерен, т.к. для отображения отдаётся приоритет
+        теневому DOM
+        <span slot="birthday">
+          Этот слот проигнорирован, т.к. не является потомком верхнего уровня
+        </span>
+      </div>
+    </user-card>
+    <br />
+    <user-card>
+      Всё что не попало в именованные слоты
+      <span slot="username">Иван Иванов</span>
+      попадёт в безымянный слот если он есть
+    </user-card>
+    <br />
+    <script>
+      let counter = 0;
+      customElements.define('user-card', class extends HTMLElement {
+        connectedCallback() {
+          counter += 1;
+          this.attachShadow({ mode: 'open' })
+          this.shadowRoot.innerHTML = `
+            ${counter}
+            <div>Имя:
+              <slot name="username"></slot>
+            </div>
+            <div>Дата рождения:
+              <slot name="birthday">Default Date</slot>
+            </div>
+          `
+          if (counter > 4) {
+            this.shadowRoot.innerHTML += `
+              <fieldset>
+                <legend>Безымянный слот</legend>
+                <slot></slot>
+              </fieldset>
+            `
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

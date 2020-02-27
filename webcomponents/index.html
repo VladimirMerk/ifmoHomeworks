@@ -5,7 +5,16 @@
       :not(:defined) {
         color: #ff0000;
       }
+      input::-webkit-slider-runnable-track {
+        background: red;
+      }
+      input::-webkit-slider-thumb {
+        border-radius: 10px;
+      }
     </style>
+
+
+<div id="elem"></div>
   </header>
   <body>
     <my-element>
@@ -18,8 +27,11 @@
       hour="numeric" minute="numeric" second="numeric"
       time-zone-name="short"
     >Загрузка</time-formatted>
+    <live-timer id="elem" hour="numeric" minute="numeric" second="numeric"></live-timer>
     <br /><br />
     <button is="hello-button">Скажу привет за клик по мне ;)</button>
     <button is="hello-button" disabled>Скажу привет за клик по мне ;)</button>
+    <br /><br />
+    <input type="range"></ input>
   </body>
 </html>

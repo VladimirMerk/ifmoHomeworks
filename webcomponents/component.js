@@ -3,6 +3,10 @@ customElements.whenDefined('time-formatted').then(() => {
 })
 
 class TimeFormatted extends HTMLElement {
+  constructor() {
+    super();
+    console.log('TimeFormatted constructor');
+  }
   render() {
     let date = new Date(this.getAttribute('datetime') || Date.now());
     this.innerHTML = new Intl.DateTimeFormat('default', {
@@ -25,9 +29,31 @@ class TimeFormatted extends HTMLElement {
     this.render();
   }
   connectedCallback() {
+    console.log('TimeFormatted connected')
     if (! this.renderred) {
       this.renderred = true;
       this.render();
+    }
+  }
+}
+
+class LiveTimer extends TimeFormatted {
+  constructor() {
+    super();
+  }
+  connectedCallback() {
+    if (! this.timer) {
+      this.timer = setInterval(() => {
+        this.render()
+        const event = new CustomEvent('tick', { 'detail': this.date });
+        this.dispatchEvent(event)
+      }, 1000)
+    }
+  }
+  disconnectedCallback() {
+    if (this.timer) { // Обязательно удаляем таймер при удалении элемента
+      clearInterval(this.timer)
+      this.timer = null
     }
   }
 }
@@ -80,5 +106,6 @@ customElements.define('my-element', MyElement);
 setTimeout(() => {
   customElements.define('time-formatted', TimeFormatted);
 }, 1000)
+customElements.define('live-timer', LiveTimer)
 
 customElements.define('hello-button', HelloButton, {extends: 'button'});

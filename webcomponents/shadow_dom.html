@@ -1,0 +1,28 @@
+<html>
+  <header>
+    <style>
+      /* стили документа не применятся в теневом дереве внутри #elem (1) */
+      p { color: red; }
+    </style>
+  </header>
+  <body>
+    <div id="elem"></div>
+    <div id="elemClosed"></div>
+    <script>
+      const host = elem.attachShadow({mode: 'open'});
+      const hostClosed = elemClosed.attachShadow({mode: 'closed'});
+        // у теневого дерева свои стили (2)
+      elem.shadowRoot.innerHTML = `
+        <style> p { font-weight: bold; } </style>
+        <p>Hello, John!</p>
+      `;
+
+      // <p> виден только запросам внутри теневого дерева (3)
+      console.log('host open', host === elem.shadowRoot); // true
+      console.log('host closed', hostClosed === elem.shadowRoot); // false
+      console.log(document.querySelectorAll('p').length); // 0
+      console.log(elem.shadowRoot.querySelectorAll('p').length); // 1
+    </script>
+
+  </body>
+</html>

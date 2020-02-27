@@ -1,0 +1,31 @@
+<html>
+  <header>
+  </header>
+  <body>
+    <template id="tmpl">
+      <div class="message">Hello, world!</div>
+    </template>
+
+    <template id="tmplMsg">
+      <style>p {font-size: 16px; font-weight: bold;}</style>
+      <p id="message"></p>
+    </template>
+
+    <div id="elem">Нажми на меня</div>
+
+    <script>
+      let pelem = document.createElement('p');
+      const templateContent = tmpl.content // содержит DocumentFragment
+      pelem.append(templateContent.cloneNode(true)) // как и любой DocumentFragment обнуляет себя при вставке
+      console.log(templateContent)
+      document.body.append(pelem);
+
+      elem.onclick = function() {
+        elem.attachShadow({mode: 'open'})
+        elem.shadowRoot.append(tmplMsg.content.cloneNode(true))
+        elem.shadowRoot.getElementById('message').innerHTML = 'Hello world!'
+      }
+    </script>
+
+  </body>
+</html>
