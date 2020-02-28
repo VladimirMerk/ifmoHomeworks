@@ -1,0 +1,50 @@
+<html>
+  <header>
+  </header>
+  <body>
+    <script>
+      customElements.define('user-card', class extends HTMLElement {
+        connectedCallback() {
+          this.attachShadow({mode: 'open'})
+          this.shadowRoot.innerHTML = `
+            <p>
+              Привет! Я карточка<br />
+              <button>Нажми меня</button><br />
+              <div>
+                <b>Имя:</b>
+                <slot style="cursor: pointer;" name="username"></slot>
+              </div>
+            </p>
+          `
+          this.shadowRoot.addEventListener('click', e => {
+            alert("Inside click: " + e.target.tagName);
+            console.log('inside composedPath', e.composedPath());
+
+            // Выйдет за пределы теневого dom
+            e.target.dispatchEvent(new CustomEvent('test', {
+              bubbles: true,
+              composed: true,
+              detail: "composed"
+            }));
+
+            // Останется внутри теневого dom
+            e.target.dispatchEvent(new CustomEvent('test', {
+              bubbles: true,
+              composed: false,
+              detail: "not composed"
+            }));
+          });
+        }
+      })
+      document.addEventListener('click',
+      e => {
+        alert("Outside click: " + e.target.tagName);
+        console.log('outside composedPath', e.composedPath())
+      })
+    </script>
+    <user-card></user-card>
+    <user-card>
+      <span slot="username">Клик на слот определит элемент как span и в слетлом и в теневом dom</span>
+    </user-card>
+  </body>
+</html>

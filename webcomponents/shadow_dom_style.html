@@ -1,0 +1,80 @@
+<html>
+  <header>
+  </header>
+  <body class="dark-theme">
+    <template id="tmpl">
+      <style>
+        :host {
+          display: inline-block;
+          border: 1px solid blue;
+          padding: 10px;
+        }
+        :host([centered]) {
+          position: fixed;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          border: 1px solid red;
+        }
+        :host-context(.dark-theme) {
+          background-color: #3f3f3f;
+          color: #ffffff;
+        }
+      </style>
+      <slot></slot>
+    </template>
+    <script>
+      customElements.define('custom-dialog', class extends HTMLElement {
+        connectedCallback() {
+          this.attachShadow({mode: 'open'}).append(tmpl.content.cloneNode(true))
+        }
+      })
+
+      customElements.define('user-card', class extends HTMLElement {
+        connectedCallback() {
+          this.attachShadow({mode: 'open'});
+          this.shadowRoot.innerHTML = `
+            <style>
+            slot {
+              display: block;
+              font-size: 20px;
+              background-color: #ffe3e3;
+            }
+            ::slotted(span) {
+              background-color: #da03da; /*Это не сработает т.к. span не первый потомок в slot*/
+            }
+            ::slotted(div) {
+              border: 1px solid red;
+            }
+            .field {
+              color: var(--user-card-field-color, black)
+            }
+            </style>
+            <div class='field'>Имя: <slot name="username"></slot></div>
+            <div class='field'>Дата рождения: <slot name="birthday">Не указано</slot></div><br />
+          `;
+        }
+      })
+    </script>
+    <custom-dialog centered>
+      Hello! I am cented!
+    </custom-dialog>
+    <custom-dialog>
+      Hello! I am not cented!
+    </custom-dialog>
+    <br />
+    <style>
+      span {
+        font-weight: bold;
+      }
+    </style>
+    <user-card>
+      <div slot="username"><span>John Smith</span></div>
+    </user-card>
+
+    <user-card style="--user-card-field-color: green;">
+      <div slot="username">John Smith</div>
+      <div slot="birthday">01.01.2001</div>
+    </user-card>
+  </body>
+</html>

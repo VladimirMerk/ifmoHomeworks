@@ -1,0 +1,173 @@
+<html>
+  <header>
+  </header>
+  <body>
+  <template id="voting-item-template">
+    <style media="screen">
+        :host {
+          display: block;
+          border-top: 1px solid #e3e3e3;
+          border-bottom: 1px solid #e3e3e3;
+          padding: 5px;
+        }
+        h1 {
+          padding: 0px 0px 10px 0px;
+          margin: 0px;
+          color: #3d3d3d;
+        }
+        .controls {
+          display: inline-block;
+        }
+        .votes {
+          display: inline-block;
+        }
+        .votes .like:before {
+          content: "😻"
+        }
+        button {
+          cursor: pointer;
+          margin-right: 10px;
+          padding: 10px;
+        }
+        button[name=like]:before {
+          content: "👍"
+        }
+        button[name=dislike]:before {
+          content: "👎"
+        }
+        button:hover {
+          outline: 2px solid #c6ff00;
+        }
+        button[disabled] {
+          cursor: default;
+          filter: grayscale(90%);
+        }
+        button[disabled]:hover {
+          outline: initial
+        }
+    </style>
+    <h1><slot></slot></h1>
+    <div class="controls">
+      <button name="dislike"></button>
+      <button name="like"></button>
+    </div>
+    <div class="votes" id="number-votes"></div>
+  </template>
+
+  <script>
+    {
+      getList().then((data) => {
+        const votingElements = getVotingElements(data)
+        document.body.append(...votingElements);
+      }).catch((error) => {
+        alert("Error: " + error);
+      });
+
+      class VotingItem extends HTMLElement {
+        constructor() {
+          super()
+          this.numberOfVotes = 0
+          this.like = document.createElement('span')
+          this.like.classList.add('like')
+        }
+        connectedCallback() {
+          if (! this.shadowRoot) {
+            this.attachShadow({mode: 'open'})
+            this.shadowRoot.innerHTML = ''
+            this.shadowRoot.append(
+              document.getElementById('voting-item-template')
+              .content.cloneNode(true)
+            )
+            this.changeVotes(this.numberOfVotes)
+            this.shadowRoot.addEventListener('click', this.onClick.bind(this))
+          }
+        }
+        onClick (e) {
+          switch(e.target.tagName) {
+            case 'BUTTON':
+              switch(e.target.name) {
+                case 'like':
+                  this.changeVotes(++this.numberOfVotes)
+                break;
+                case 'dislike':
+                  this.changeVotes(--this.numberOfVotes)
+                break;
+              }
+            break;
+          }
+        }
+        attributeChangedCallback(name, oldValue, newValue) {
+          switch (name) {
+            case 'votes':
+              this.changeVotes(newValue)
+              break;
+          }
+        }
+        static get observedAttributes() {
+          return ['votes']
+        }
+        changeVotes(value) {
+          this.numberOfVotes = +value
+          if (this.numberOfVotes > 10) {
+            this.numberOfVotes = 10
+          }
+          if (!this.numberOfVotes || this.numberOfVotes < 0) {
+            this.numberOfVotes = 0
+          }
+          this.renderVotes()
+        }
+        renderVotes() {
+          if (this.shadowRoot) {
+            const votesElement = this.shadowRoot.getElementById('number-votes')
+            const likeButton = this.shadowRoot.querySelector('[name=like]')
+            const dislikeButton = this.shadowRoot.querySelector('[name=dislike]')
+
+            if (this.numberOfVotes >= 10) {
+              likeButton.disabled = true
+            } else {
+              likeButton.disabled = false
+            }
+            if (this.numberOfVotes <= 0) {
+              dislikeButton.disabled = true
+            } else {
+              dislikeButton.disabled = false
+            }
+
+            votesElement.innerHTML = ''
+
+            for (let i = 0; i < this.numberOfVotes || 0; i++) {
+              votesElement.append(this.like.cloneNode())
+            }
+          }
+        }
+      }
+
+      customElements.define('voting-item', VotingItem)
+
+      function getVotingElements(votingArray) {
+        return votingArray.map(votingObject => {
+          const votingItem = document.createElement('voting-item')
+          const slot = document.createElement('span')
+          slot.appendChild(document.createTextNode(votingObject.title))
+          votingItem.setAttribute('votes', votingObject.votes)
+          votingItem.appendChild(slot)
+          return votingItem
+        });
+      }
+
+      function getList() {
+        return new Promise((resolve, reject) => {
+          const url = new URL('https://kodaktor.ru/j/react5b_6cbf2');
+          fetch(url)
+            .then(response => {
+              if (!response.ok) throw new Error(response.statusText)
+              return response.json()
+            })
+            .then(data => resolve(data))
+            .catch(error => reject(error))
+        });
+      }
+    }
+  </script>
+  </body>
+<html>
