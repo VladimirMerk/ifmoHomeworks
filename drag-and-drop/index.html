@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title></title><meta charset="utf-8">
+  <style>
+    .to-do-list {
+      border: 2px solid gold;
+      display: inline-flex;
+    }
+
+    .to-do-list .side {
+      padding: 10px 30px;
+      width: 200px;
+      height: inherit;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .to-do-list .side.done {
+      background-color: #dcff98;
+    }
+
+    .to-do-list .side h2 {
+      margin: 10px 0;
+    }
+
+    .to-do-list .side.drop {
+
+    }
+
+    .to-do-list .side ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .to-do-list .side ul li {
+      background-color: #a9fffb;
+      padding: 10px 10px;
+      margin: 5px 0;
+      cursor: move;
+      cursor: grab;
+      cursor: -moz-grab;
+      cursor: -webkit-grab;
+    }
+
+    .to-do-list .side.done ul li,
+    .to-do-list .side ul li:active {
+      background-color: gold;
+    }
+
+    .to-do-list .side ul li:active {
+      cursor: grabbing;
+      cursor: -moz-grabbing;
+      cursor: -webkit-grabbing;
+    }
+  </style>
+ </head>
+ <body>
+  <h1>To-do list</h1>
+  <h4 id="author" title="GossJS">Микуленко Владимир</h4>
+  <a href="#" draggable="false">Link without draggable</a>
+  <br /><br />
+  <div class='to-do-list'>
+    <div class="side" droppable='true'>
+      <h2>To-do</h2>
+      <ul>
+        <li draggable='true'>Thing 1</li>
+        <li draggable='true'>Thing 2</li>
+        <li draggable='true'>Thing 3</li>
+        <li draggable='true'>Thing 4</li>
+      </ul>
+    </div>
+    <div class="side done" droppable='true'>
+      <h2>Done</h2>
+      <ul>
+        <li draggable='true'>Thing 5</li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    const toDoList = document.querySelector('.to-do-list');
+    toDoList.addEventListener('dragstart', toDoDragStart);
+    toDoList.querySelectorAll('.side').forEach((side) => {
+      side.addEventListener('dragover', allowDrop);
+      side.addEventListener('dragenter', toDoDragEnter);
+      side.addEventListener('dragleave', toDoDragLeave);
+      side.addEventListener('drop', toDoDrop);
+    });
+
+
+    toDoList.addEventListener('dragend', () => {
+      console.log('dragend')
+    });
+
+    toDoList.addEventListener('dragleave', () => {
+      console.log('dragleave')
+    });
+    // toDoList.addEventListener('drag', () => {
+    //   console.log('drag')
+    // });
+
+    toDoList.querySelectorAll('.slide').forEach(slide => {
+      slide.addEventListener('dragend', dragend);
+    });
+
+    function toDoDragEnter(event) {
+      event.target.classList.add('drop')
+    }
+
+    function toDoDragLeave(event) {
+      event.target.classList.remove('drop')
+    }
+
+    function toDoDragStart(e) {
+      console.log('dragstart')
+      if (e.target.tagName === 'LI') {
+        e.dataTransfer.effectAllowed = 'move';
+        // console.log('e.target.innerHTML', e.target.outerHTML)
+        e.dataTransfer.setData('text/html', e.target.outerHTML);
+        // setDragImage
+        // addElement
+      }
+    }
+
+    function allowDrop(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+      return false;
+    }
+
+    function toDoDrop(e) {
+      const side = e.target.closest('.side').querySelector('ul');
+      const thing = document.createElement('template');
+      thing.innerHTML = e.dataTransfer.getData('text/html');
+      side.appendChild(thing.content);
+      console.log('toDoDrop', side, thing)
+    }
+
+    function addElement() {
+
+    }
+  </script>
+ </body>
+</html>

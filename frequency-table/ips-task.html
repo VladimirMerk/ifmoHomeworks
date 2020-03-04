@@ -22,109 +22,107 @@
   </style>
  </head>
  <body>
-   <h4 id="author" title="GossJS">Микуленко Владимир</h4>
-   <script>
-   {
-	getIPList().then(ipList => {
-		if (ipList.error){
-			console.error(ipList.error);
-			return;
-		}
-      
-      	const ipArray = []
-      	const uniqIpList = ipList.filter(onlyUniques)
-		.map(countEntries)
-		.sort(sortByCountField);
-        
-		const countUnique = getUniqueCount(uniqIpList);
-		const countOneTimes = getOneTimesCount(uniqIpList);
-		const maxFrequency = getMaxFrequency(uniqIpList);
-		
-		document.body.appendChild(createDiv('Количество уникальных: ' + countUnique));
-		document.body.appendChild(createDiv('Количество одинарных: ' + countOneTimes));
-        document.body.appendChild(createDiv('Максимальное количество: ' + maxFrequency));
-		document.body.appendChild(createTableFromObjectsArray(uniqIpList));
-		
-		function onlyUniques(ipObject) {
-			const allow = ! ipArray.includes(ipObject.ip);
+  <h4 id="author" title="GossJS">Микуленко Владимир</h4>
+  <script>
+  {
+    getIPList().then(ipList => {
+      if (ipList.error){
+        console.error(ipList.error);
+        return;
+      }
 
-            ipArray.push(ipObject.ip);
+      const ipArray = []
+      const uniqIpList = ipList.filter(onlyUniques)
+      .map(countEntries)
+      .sort(sortByCountField);
 
-        	return allow;
-        }
-                         
-		function countEntries(ipObject) {
-			ipObject.count = ipArray.filter(ip => ip === ipObject.ip).length;         
-            return ipObject;
-        }
-                         
-        function sortByCountField (a, b) {
-			return b.count - a.count;
-		}
-                         
-		function getUniqueCount (uniqIpList) {
-			return uniqIpList.length;
-		}
-		
-		function getOneTimesCount (uniqIpList) {
-			return uniqIpList.filter(ipObject => ipObject.count === 1).length;
-		}
-                         
-		function getMaxFrequency  (uniqIpList) {
-			return uniqIpList.reduce((maxFrequency, ipObject) => {
-				if (ipObject.count > maxFrequency) {
-					maxFrequency = ipObject.count;
-                }
-				return maxFrequency;
-			}, 0)
-		}
-	});
+      const countUnique = getUniqueCount(uniqIpList);
+      const countOneTimes = getOneTimesCount(uniqIpList);
+      const maxFrequency = getMaxFrequency(uniqIpList);
 
-	function createDiv(text) {
-		const div = document.createElement('div');
-		div.appendChild(document.createTextNode(text));
-		return div;
-	}
+      document.body.appendChild(createDiv('Количество уникальных: ' + countUnique));
+      document.body.appendChild(createDiv('Количество одинарных: ' + countOneTimes));
+      document.body.appendChild(createDiv('Максимальное количество: ' + maxFrequency));
+      document.body.appendChild(createTableFromObjectsArray(uniqIpList));
 
-	function createTableFromObjectsArray(objectArray) {
-		const table = document.createElement('table'); 
-		const header = table.createTHead();
-		const body = table.createTBody();
-		const headerRow = header.insertRow(0);
-		
-		Object.keys(objectArray[0]).forEach((field, index) => {
-			const cell = headerRow.insertCell(index);
-          	uppercaseField = uppercaseFirstLetter(field);
-            cell.appendChild(document.createTextNode(uppercaseField));
+      function onlyUniques(ipObject) {
+        const allow = ! ipArray.includes(ipObject.ip);
+        ipArray.push(ipObject.ip);
+        return allow;
+      }
+
+      function countEntries(ipObject) {
+        ipObject.count = ipArray.filter(ip => ip === ipObject.ip).length;
+        return ipObject;
+      }
+
+      function sortByCountField (a, b) {
+        return b.count - a.count;
+      }
+
+      function getUniqueCount (uniqIpList) {
+        return uniqIpList.length;
+      }
+
+      function getOneTimesCount (uniqIpList) {
+        return uniqIpList.filter(ipObject => ipObject.count === 1).length;
+      }
+
+      function getMaxFrequency  (uniqIpList) {
+        return uniqIpList.reduce((maxFrequency, ipObject) => {
+          if (ipObject.count > maxFrequency) {
+            maxFrequency = ipObject.count;
+          }
+          return maxFrequency;
+        }, 0)
+      }
+    });
+
+    function createDiv(text) {
+      const div = document.createElement('div');
+      div.appendChild(document.createTextNode(text));
+      return div;
+    }
+
+    function createTableFromObjectsArray(objectArray) {
+      const table = document.createElement('table');
+      const header = table.createTHead();
+      const body = table.createTBody();
+      const headerRow = header.insertRow(0);
+
+      Object.keys(objectArray[0]).forEach((field, index) => {
+        const cell = headerRow.insertCell(index);
+        uppercaseField = uppercaseFirstLetter(field);
+        cell.appendChild(document.createTextNode(uppercaseField));
+      });
+
+      objectArray.forEach((objectItem, index) => {
+        const row = body.insertRow(index);
+        Object.keys(objectItem).forEach((field, index) => {
+          const cell = row.insertCell(index);
+          cell.appendChild(document.createTextNode(objectItem[field]));
         });
+      });
 
-        objectArray.forEach((objectItem, index) => {
-        	const row = body.insertRow(index);
-			Object.keys(objectItem).forEach((field, index) => {
-				const cell = row.insertCell(index);
-                cell.appendChild(document.createTextNode(objectItem[field]));
-			});
-		});
+      return table;
+      }
 
-		return table;
+    function getIPList() {
+      return new Promise(resolve => {
+        const url = new URL('https://kodaktor.ru/j/ips');
+        fetch(url).then(response => {
+          if (!response.ok) throw new Error(response.statusText);
+          return response.json();
+        })
+        .then(ipList => resolve(ipList))
+        .catch(error => resolve({error}));
+      });
     }
-      
-	function getIPList() {
-		return new Promise(resolve => {
-			const url = new URL('https://kodaktor.ru/j/ips');
-			fetch(url).then(response => {
-				if (!response.ok) throw new Error(response.statusText);
-				return response.json();
-			})
-            .then(ipList => resolve(ipList))
-        	.catch(error => resolve({error}));
-		});
-	}
-	
-     function uppercaseFirstLetter(text) {
-      return `${text[0].toUpperCase()}${text.slice(1)}`; 
+
+    function uppercaseFirstLetter(text) {
+      return `${text[0].toUpperCase()}${text.slice(1)}`;
     }
-   }
+  }
    </script>
  </body>
 </html>
