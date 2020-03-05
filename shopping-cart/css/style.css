@@ -1,0 +1,238 @@
+/*
+Позиционирование
+Блочная модель
+Типографика
+Оформление
+Анимация
+Разное
+*/
+
+/*
+.selector,
+.selector-secondary,
+.selector[type="text"] {
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 2px #cccccc, inset 0 1px 0 #ffffff;
+}
+*/
+
+/*
+Альтернативные шрифты
+body {
+  font-family: "Helvetica", "Tahoma", sans-serif;
+}
+*/
+
+body {
+  color: #000;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+body .currency-sign::before {
+  content: "$";
+}
+
+body[data-currency="roubles"] .currency-sign::before {
+  content: initial;
+}
+
+body[data-currency="roubles"] .currency-sign::after {
+  content: "₽";
+}
+
+button.standart-button {
+
+}
+
+section {
+  max-width: 1335px;
+}
+
+section.products {
+  margin: 0 auto;
+}
+
+section.products .products-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+.products .product {
+  border: 1px solid #a3a3a3;
+  border-radius: 3px;
+  flex-basis: 20%;
+  -ms-flex: auto;
+  width: 250px;
+  position: relative;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5px;
+}
+
+/* section.products .product .content {
+  width: 200px;
+  border: 1px solid red;
+  display: inline-block;
+} */
+
+.products .product .image {
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  border: 1px solid #e3e3e3;
+  border-radius: 3px;
+  padding: 3px;
+  box-sizing: border-box;
+  line-height: 200px;
+}
+
+.products .product .image img {
+  max-width: calc(100% - 8px);
+  max-height: calc(100% - 8px);
+  vertical-align: middle;
+}
+
+section.products .product .description {
+
+}
+
+section.products .product .description .title {
+
+}
+
+section.products .product .description .price {
+
+}
+
+section.products .product button.add-to-cart {
+  margin-top: auto;
+}
+
+section.cart {
+
+}
+
+section.cart .products {
+
+}
+
+section.cart .products .product {
+
+}
+
+section.cart .products .product .image {
+
+}
+
+section.cart .products .product .image img {
+
+}
+
+section.cart .products .product .description {
+
+}
+
+.products .product .description .title {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 18px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.products .product .description .price {
+  font-size: 20px;
+  color: #0083c7;
+  padding-bottom: 10px;
+}
+
+section.cart .products .product .total {
+
+}
+
+section.cart .products .product .total button.add,
+section.cart .products .product .total button.remove {
+
+}
+
+section.cart .products .product .total button.add {
+
+}
+
+section.cart .products .product .total button.remove {
+
+}
+
+section.cart .products .product .total button.remove-from-cart {
+
+}
+
+section.cart .status {
+
+}
+
+section.cart .status button.clean-cart {
+
+}
+
+section.cart .status .items {
+
+}
+
+section.cart .status .items span {
+
+}
+
+section.cart .status .budget {
+
+}
+
+section.cart .status .budget .edit {
+
+}
+
+section.cart .status .budget .edit input {
+
+}
+
+section.cart .status .budget .edit button {
+
+}
+
+section.cart .status .budget .show {
+
+}
+
+section.cart .status .budget .show span {
+
+}
+
+section.cart .status .budget .show button.change {
+
+}
+
+section.cart .status .budget[data-value="0"] .show span.limited {
+  display: none;
+}
+
+section.cart .status .budget:not([data-value="0"]) .show span.unlimited {
+  display: none;
+}
+
+section.cart .status .budget:not([data-edit-mode="0"]) .show {
+  display: none;
+}
+
+section.cart .status .budget[data-edit-mode="0"] .edit {
+  display: none;
+}
