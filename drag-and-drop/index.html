@@ -11,9 +11,9 @@
     .to-do-list .side {
       padding: 10px 30px;
       width: 200px;
-      height: inherit;
-      display: inline-block;
+      display: inline-flex;
       vertical-align: top;
+      flex-direction: column;
     }
 
     .to-do-list .side.done {
@@ -24,13 +24,23 @@
       margin: 10px 0;
     }
 
-    .to-do-list .side.drop {
-
+    .to-do-list .side.drop ul {
+      outline: 1px dashed #000;
     }
 
     .to-do-list .side ul {
       list-style: none;
       padding: 0;
+      border: 1px solid #e3e3e3;
+      flex-grow: 1;
+    }
+
+    .to-do-list .side ul li:first-child {
+      margin-top: 0;
+    }
+
+    .to-do-list .side ul li:last-child {
+      margin-bottom: 0;
     }
 
     .to-do-list .side ul li {
@@ -82,62 +92,58 @@
     toDoList.addEventListener('dragstart', toDoDragStart);
     toDoList.querySelectorAll('.side').forEach((side) => {
       side.addEventListener('dragover', allowDrop);
-      side.addEventListener('dragenter', toDoDragEnter);
-      side.addEventListener('dragleave', toDoDragLeave);
       side.addEventListener('drop', toDoDrop);
     });
 
-
-    toDoList.addEventListener('dragend', () => {
-      console.log('dragend')
-    });
-
-    toDoList.addEventListener('dragleave', () => {
-      console.log('dragleave')
-    });
-    // toDoList.addEventListener('drag', () => {
-    //   console.log('drag')
-    // });
-
-    toDoList.querySelectorAll('.slide').forEach(slide => {
-      slide.addEventListener('dragend', dragend);
-    });
-
-    function toDoDragEnter(event) {
-      event.target.classList.add('drop')
-    }
-
-    function toDoDragLeave(event) {
-      event.target.classList.remove('drop')
-    }
-
     function toDoDragStart(e) {
-      console.log('dragstart')
       if (e.target.tagName === 'LI') {
-        e.dataTransfer.effectAllowed = 'move';
-        // console.log('e.target.innerHTML', e.target.outerHTML)
-        e.dataTransfer.setData('text/html', e.target.outerHTML);
-        // setDragImage
-        // addElement
+        highliteSides();
+        const thing = e.target;
+        const side = thing.closest('.side');
+
+        // http://jsfiddle.net/stevendwood/3sAYn/2/
+        e.dataTransfer.effectAllowed = 'move'; // Курсор принимает указатель перемещения
+
+        e.dataTransfer.setData('application/json', JSON.stringify({
+          side: getElementIndex(side),
+          thing: getElementIndex(thing)
+        }));
       }
     }
 
     function allowDrop(event) {
       event.preventDefault();
-      event.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+      event.dataTransfer.dropEffect = 'move';  // Курсор принимает указатель перемещения
       return false;
     }
 
     function toDoDrop(e) {
       const side = e.target.closest('.side').querySelector('ul');
-      const thing = document.createElement('template');
-      thing.innerHTML = e.dataTransfer.getData('text/html');
-      side.appendChild(thing.content);
-      console.log('toDoDrop', side, thing)
+      const info = JSON.parse(e.dataTransfer.getData('application/json'));
+      const thing = toDoList.children[info.side].querySelector('ul').children[info.thing];
+      side.appendChild(thing);
+      highliteSidesRemove();
     }
 
-    function addElement() {
+    function highliteSides() {
+      toDoList.querySelectorAll('.side').forEach((side) => {
+        side.classList.add('drop');
+      });
+    }
 
+    function highliteSidesRemove () {
+      toDoList.querySelectorAll('.side').forEach((side) => {
+        side.classList.remove('drop');
+      });
+    }
+
+    function getElementIndex(element) {
+      let count = -1;
+      while (element) {
+        element = element.previousElementSibling;
+        count += 1;
+      }
+      return count;
     }
   </script>
  </body>
