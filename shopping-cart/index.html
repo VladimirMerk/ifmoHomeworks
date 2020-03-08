@@ -8,136 +8,84 @@
   </head>
   <body data-currency="dollars">
     <main>
-      <section class="products">
-        <div class="products-wrapper">
-        <div class="product">
+      <h2>Товары</h2>
+      <section class="products loading" data-products>
+        <div class="loader"></div>
+        <div class="products-wrapper" data-products-list>
 
-            <div class="image"><img src="./images/no_image.png" alt="" ></div>
-            <div class="description">
-              <div class="title">HDD asdkjf  sdkajfalskdjf laskdjfalsdkjf laskdjflaskdjf sadkjf</div>
-              <div class="price currency-sign">120</div>
-            </div>
-            <button class="standart-button add-to-cart">Добавить в корзину</button>
-
-        </div>
-        <div class="product">
-
-            <div class="image"><img src="./images/no_image.png" alt="" ></div>
-            <div class="description">
-              <div class="title">HDD</div>
-              <div class="price currency-sign">120</div>
-            </div>
-            <button class="standart-button add-to-cart">Добавить в корзину</button>
-
-        </div>
-        <div class="product">
-
-            <div class="image"><img src="./images/no_image.png" alt="" ></div>
-            <div class="description">
-              <div class="title">HDD</div>
-              <div class="price currency-sign">120</div>
-            </div>
-            <button class="standart-button add-to-cart">Добавить в корзину</button>
-
-        </div>
-        <div class="product">
-
-            <div class="image"><img src="./images/no_image.png" alt="" ></div>
-            <div class="description">
-              <div class="title">HDD</div>
-              <div class="price currency-sign">120</div>
-            </div>
-            <button class="standart-button add-to-cart">Добавить в корзину</button>
-
-        </div>
-        <div class="product">
-
-            <div class="image"><img src="./images/no_image.png" alt="" ></div>
-            <div class="description">
-              <div class="title">HDD</div>
-              <div class="price currency-sign">120</div>
-            </div>
-            <button class="standart-button add-to-cart">Добавить в корзину</button>
-
-        </div>
         </div>
       </section>
 
-
-      <section class="cart">
+      <h2>Корзина</h2>
+      <section class="cart" data-cart>
         <div class="products">
-          <div class="product">
-            <div class="image"><img src="./images/no_image.png" alt="" ></div>
-            <div class="description">
-              <div class="title">HDD</div>
-              <div class="price currency-sign">120</div>
-            </div>
-            <div class="total">
-              <button class="add">+</button>
-              <div class="count">2</div>
-              <div class="price currency-sign">240</div>
-              <button class="remove">-</button>
-            </div>
-            <button class="standart-button remove-from-cart">Удалить из корзины</button>
-          </div>
-          <div class="product">
-            <div class="image"><img src="./images/no_image.png" alt="" ></div>
-            <div class="description">
-              <div class="title">HDD</div>
-              <div class="price currency-sign">120</div>
-            </div>
-            <div class="total">
-              <button class="add">+</button>
-              <div class="count">2</div>
-              <div class="price currency-sign">240</div>
-              <button class="remove">-</button>
-            </div>
-            <button class="standart-button remove-from-cart">Удалить из корзины</button>
-          </div>
-          <div class="product">
-            <div class="image"><img src="./images/no_image.png" alt="" ></div>
-            <div class="description">
-              <div class="title">HDD</div>
-              <div class="price currency-sign">120</div>
-            </div>
-            <div class="total">
-              <button class="add">+</button>
-              <div class="count">2</div>
-              <div class="price currency-sign">240</div>
-              <button class="remove">-</button>
-            </div>
-            <button class="standart-button remove-from-cart">Удалить из корзины</button>
-          </div>
-          <div class="product">
-            <div class="image"><img src="./images/no_image.png" alt="" ></div>
-            <div class="description">
-              <div class="title">HDD</div>
-              <div class="price currency-sign">120</div>
-            </div>
-            <div class="total">
-              <button class="add">+</button>
-              <div class="count">2</div>
-              <div class="price currency-sign">240</div>
-              <button class="remove">-</button>
-            </div>
-            <button class="standart-button remove-from-cart">Удалить из корзины</button>
+          <div class="products-wrapper" data-products-list>
           </div>
         </div>
         <div class="status">
-          <button>Очистить корзину</button>
-          <div class="items">Товаров: <span>2</span></div>
-          <div class="budget" data-value="0" data-edit-mode="0">
+          <!-- <button class="standart-button" data-action="clean-cart">Очистить корзину</button> -->
+          <div class="items">
+            Товаров:
+            <span data-total-count="0"></span>
+          </div>
+          <div class="price">
+            Сумма:
+            <span class="currency-sign" data-total-price="0"></span>
+          </div>
+          <div class="budget" data-budget data-value="0" data-edit-mode="0">
             <div class="edit">
-              <input type="number" value="0" />
-              <button>Сохранить</button>
+              Бюджет:
+              <form>
+                <input type="number" value="0" min="0" max="1000000" />
+                <button class="standart-button" data-action="budget-save">Сохранить</button>
+              </form>
             </div>
             <div class="show">
-              Бюджет: <span class="unlimited">Без ограничений</span><span class="limited">7</span><button class="change">Редактировать</button>
+              Бюджет:
+              <span class="unlimited">Без ограничений</span>
+              <span class="limited currency-sign" data-value="0"></span>
+              <button class="change standart-button" data-action="budget-edit">Изменить</button>
             </div>
           </div>
         </div>
       </section>
     </main>
+
+    <templates>
+      <template id="product-main-tempate">
+        <div class="product" data-pid="..." draggable="true">
+            <div class="image"><img data-image src="./images/no_image.png" alt="" ></div>
+            <div class="description">
+              <div class="title" data-title>...</div>
+              <div class="price currency-sign" data-price>...</div>
+            </div>
+            <button class="standart-button add-to-cart"
+                    data-action="add-to-cart"
+                    data-pid="...">
+              Добавить в корзину
+            </button>
+        </div>
+      </template>
+      <template id="product-cart-tempate">
+        <div class="product" data-pid="...">
+          <button value="Удалить из корзины" class="remove-from-cart"
+            data-action="remove-from-cart"
+            data-pid="...">
+          </button>
+          <div class="image"><img src="./images/no_image.png" alt="" ></div>
+          <div class="description">
+            <div class="title" data-title>...</div>
+            <div class="price currency-sign" data-price>...</div>
+          </div>
+          <div class="quantity">
+            <button class="standart-button add" data-action="increase-amount" data-pid="...">+</button>
+            <div class="count" data-count>...</div>
+            <button class="standart-button remove" data-action="decrease-amount" data-pid="...">-</button>
+          </div>
+          <div class="total-price currency-sign" data-total-price>...</div>
+        </div>
+      </template>
+    </templates>
     <script src="./js/app.js"></script>
   </body>
 </html>
