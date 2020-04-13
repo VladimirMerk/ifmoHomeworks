@@ -23,12 +23,13 @@
   }
 
   class ShopController {
-    static DATA_URL = 'https://kodaktor.ru/cart_data.json';
-    static MSG = {
-      overLimit: `Ваша кредитная карта не расчитана на сумму больше {budgetLimit}`,
-      lessBudget: `Бюджет не может быть меньше чем сумма товаров в корзине`
-    }
     constructor({ productPlace, cartPlace, productTemplate } = {}) {
+      this.DATA_URL = 'https://kodaktor.ru/cart_data.json';
+      this.MSG = {
+        overLimit: `Ваша кредитная карта не расчитана на сумму больше {budgetLimit}`,
+        lessBudget: `Бюджет не может быть меньше чем сумма товаров в корзине`
+      }
+
       this.products = [];
       this.cart = [];
       this.budgetLimit = this.loadBudget() || 0;
@@ -180,7 +181,7 @@
 
       if (this.budgetLimit > 0 && this.getTotalPriceCart() > this.budgetLimit) {
         this.decreaseAmountInCart(productId);
-        this.message(ShopController.MSG.overLimit, { budgetLimit: this.budgetLimit })
+        this.message(this.MSG.overLimit, { budgetLimit: this.budgetLimit })
         return;
       }
 
@@ -249,7 +250,7 @@
     }
 
     loadRemoteProducts() {
-      const url = new URL(ShopController.DATA_URL);
+      const url = new URL(this.DATA_URL);
       return fetch(url)
         .then(response => {
           if (!response.ok) throw new Error(response.statusText);
@@ -293,7 +294,7 @@
 
       const totalPrice = this.getTotalPriceCart()
       if (totalPrice > 0 && newBudget > 0 && totalPrice > newBudget) {
-        this.message(ShopController.MSG.lessBudget)
+        this.message(this.MSG.lessBudget)
         return;
       }
 
