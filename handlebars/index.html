@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>HandleBars</title><meta charset="utf-8"><link rel="stylesheet" href="/css/board3">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script> 
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+   <style>
+    table { border: 2px solid #666; padding: 5px; width: 30%; text-align: left; }
+    th { font-weight: bold; padding: 2px; background: gray; }
+    tr:nth-child(odd) { background-color: #dddddd; }
+</style>
+ </head>
+ <body>
+    <h1>HandleBars</h1>
+    <h4 id="author" title="GossJS">Микуленко Владимир</h4>
+    <button id='b1'> Показать список </button>
+    <button id='b2'> Показать таблицу </button>
+    <div id='r1'></div>
+    <div id='r2'></div>  
+    <script id='t1' type='text/x-handlebars-template'>
+        <ol id="users">
+            {{#each this}}
+            <li>
+                <span>{{ this.login }}</span> 
+                (<i>{{ this.password }}</i>)
+            </li>
+            {{/each}}
+        </ol>
+    </script>   
+    <script id='t2' type='text/x-handlebars-template'>
+        <table id="table">
+            <tr>
+                <th>Валюта</th>
+                <th>Продажа</th>
+                <th>Покупка</th>
+            </tr>
+            {{#each this}}
+            <tr>
+                <td>{{ this.name }}</td>
+                <td>{{ this.sell }}</td>
+                <td>{{ this.buy }}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </script>
+    <script>{
+       const template = Handlebars.compile($("#t1").html());
+       document
+       .querySelector('#b1')
+       .addEventListener('click', async e => {
+          const f = await fetch('/j/users/');
+          const { users } = await f.json();
+          document
+          .querySelector('#r1').innerHTML = template(users)
+       });
+      
+       // JQuery Get rates 
+       const ratesTemplate = Handlebars.compile($("#t2").html());
+       $('#b2').on('click', async () => {
+          const rates = await $.get('/j/rates/', null, null, 'json');
+      	  $('#r2').html(ratesTemplate(rates))
+       })
+       
+    }</script>   
+ </body>
+</html>
