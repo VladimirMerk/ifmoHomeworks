@@ -1,0 +1,34 @@
+<!-- https://kodaktor.ru/react_state_ffd3c -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Double Bind</title>
+    <script src="/j/out"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <!-- подключить транспайлер -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.0.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.0.0/umd/react-dom.production.min.js"></script>
+  </head>
+  <body>
+    <div class="cont"></div>
+    <script type="text/babel" data-plugins="transform-function-bind">
+      class Stater extends React.Component {
+        constructor() {
+          super();
+          this.state = { v: 'Hello' };
+        }
+        click() {
+          this.setState({ v: 'Hi, man!' });
+        }
+        render() {
+          return <h1 onClick={::this.click}>{this.state.v}</h1>;
+        }
+      }
+
+      ReactDOM.render(<Stater />, document.querySelector('.cont'));
+    </script>
+
+    <hr />
+  </body>
+</html>
+<!-- https://kodaktor.ru/vue_double_bind -->
