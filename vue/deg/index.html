@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="//vuejs.org/js/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <button v-on:click.prevent="counter += 1">U↑▲P</button>
+      <input v-model.number="counter" type="number" max="500" value="5">
+      <list v-bind:counter="counter"></list>
+      <hr />
+    </div>
+    <script type="module">
+      import List from './components/List.js';
+      const mainApp = new Vue({
+        el: '#app',
+        components: {
+          list: List,
+        },
+        data() {
+          return {
+            counter: 5,
+            min: 1,
+            max: 500
+          };
+        },
+        watch: {
+          counter: function (val) {
+            if (val > this.max) this.counter = this.max
+            if (val < this.min) this.counter = this.min
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
