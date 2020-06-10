@@ -24,6 +24,15 @@ class App extends Component {
   }
   
   videoSearch(query = '') {
+    if (process.env.DEVELOPMENT) {
+      const video = JSON.parse(process.env.DEMODATA);
+      this.setState({
+        error: void 0,
+        video: video,
+        selectedVideo: video[0],
+      });
+      return;
+    }
     youtubeSearch(query, this.opts, (error, video) => {
       if (! error) {
         // Html entity decode

@@ -12,6 +12,7 @@ function UserList({ list }) {
     </ol>
   );
 }
+
 function UserListItem({ login, password }) {
   return (
     <li>
