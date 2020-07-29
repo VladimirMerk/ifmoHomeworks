@@ -1,6 +1,6 @@
 const http = require('http');
 
-const nSize = 33;
+const nSize = 333;
 const options = {
   hostname: 'kodaktor.ru',
   port: 80,
