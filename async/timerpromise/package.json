@@ -1,0 +1,15 @@
+{
+  "name": "timerpromise-sample",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "node --experimental-modules main.js"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "timerpromise": "^1.0.0"
+  }
+}

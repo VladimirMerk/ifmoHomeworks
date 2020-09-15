@@ -1,0 +1,1 @@
+require('fs').readFile('package.json', (err, data) => err ? console.error('Error:', err) : console.log('Data:', data.toString()));
